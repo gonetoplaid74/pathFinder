@@ -15,6 +15,8 @@
 		166F96FF1D4E0DDA003DE668 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 166F96FD1D4E0DDA003DE668 /* LaunchScreen.storyboard */; };
 		166F970A1D4E0DDA003DE668 /* pathFinderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166F97091D4E0DDA003DE668 /* pathFinderTests.swift */; };
 		166F97151D4E0DDA003DE668 /* pathFinderUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166F97141D4E0DDA003DE668 /* pathFinderUITests.swift */; };
+		166F97231D4E0EF4003DE668 /* coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = 166F97221D4E0EF4003DE668 /* coin.wav */; };
+		166F97251D4E0F03003DE668 /* Coin.dae in Resources */ = {isa = PBXBuildFile; fileRef = 166F97241D4E0F03003DE668 /* Coin.dae */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		166F97101D4E0DDA003DE668 /* pathFinderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pathFinderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		166F97141D4E0DDA003DE668 /* pathFinderUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pathFinderUITests.swift; sourceTree = "<group>"; };
 		166F97161D4E0DDA003DE668 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		166F97221D4E0EF4003DE668 /* coin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = coin.wav; sourceTree = "<group>"; };
+		166F97241D4E0F03003DE668 /* Coin.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = Coin.dae; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +104,8 @@
 			isa = PBXGroup;
 			children = (
 				166F96F21D4E0DDA003DE668 /* AppDelegate.swift */,
+				166F97241D4E0F03003DE668 /* Coin.dae */,
+				166F97221D4E0EF4003DE668 /* coin.wav */,
 				166F96F41D4E0DDA003DE668 /* art.scnassets */,
 				166F96F61D4E0DDA003DE668 /* GameViewController.swift */,
 				166F96F81D4E0DDA003DE668 /* Main.storyboard */,
@@ -196,6 +202,7 @@
 				TargetAttributes = {
 					166F96EE1D4E0DDA003DE668 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = MNM3C2L7P4;
 					};
 					166F97041D4E0DDA003DE668 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -232,6 +239,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				166F97231D4E0EF4003DE668 /* coin.wav in Resources */,
+				166F97251D4E0F03003DE668 /* Coin.dae in Resources */,
 				166F96F51D4E0DDA003DE668 /* art.scnassets in Resources */,
 				166F96FF1D4E0DDA003DE668 /* LaunchScreen.storyboard in Resources */,
 				166F96FC1D4E0DDA003DE668 /* Assets.xcassets in Resources */,
@@ -405,6 +414,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = pathFinder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.uk.gonetoplaid.pathFinder;
@@ -416,6 +426,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = pathFinder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = co.uk.gonetoplaid.pathFinder;
