@@ -69,7 +69,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
     
     
     override func viewDidLoad() {
-        self.createScene()
+        self.createNewScene()
         
         //authenticatePlayer()
         let path = NSBundle.mainBundle().pathForResource("coin", ofType: "wav")
@@ -113,44 +113,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
         highscoreLabel.textColor = UIColor.darkGrayColor()
         self.view.addSubview(highscoreLabel)
         
-        gameButton = UIButton(type: UIButtonType.Custom)
-        gameButton.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        gameButton.center = CGPoint(x: self.view.frame.width - 40, y: 60)
-        gameButton.setImage(UIImage(named: "gamecenter"), forState: UIControlState())
-        /* gameButton.addTarget(self, action: #selector(GameViewController.showLeaderboard), forControlEvents: UIControlEvents.TouchUpInside)
+//        gameButton = UIButton(type: UIButtonType.Custom)
+//        gameButton.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+//        gameButton.center = CGPoint(x: self.view.frame.width - 40, y: 60)
+//        gameButton.setImage(UIImage(named: "gamecenter"), forState: UIControlState())
+       /* gameButton.addTarget(self, action: #selector(GameViewController.showLeaderboard), forControlEvents: UIControlEvents.TouchUpInside)
          self.view.addSubview(gameButton)*/
         
     }
     
-//    func physicsWorld(world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
-//        
-//        let nodeA = contact.nodeA
-//        let nodeB = contact.nodeB
-//        if nodeA.physicsBody?.categoryBitMask == bodyNames.Coin && nodeB.physicsBody?.categoryBitMask == bodyNames.Person{
-//            nodeA.removeFromParentNode()
-//            addScore()
-//            if coinSound.playing == true {
-//                coinSound.stop()
-//                coinSound.play()
-//            } else {
-//                coinSound.play()
-//            }
-//        }
-//            
-//            
-//        else if nodeA.physicsBody?.categoryBitMask == bodyNames.Person && nodeB.physicsBody?.categoryBitMask == bodyNames.Coin{
-//            nodeB.removeFromParentNode()
-//            addScore()
-//            if coinSound.playing == true{
-//                coinSound.stop()
-//                coinSound.play()
-//            } else {
-//                coinSound.play()
-//                
-//            }
-//        }
-//    }
-//    
     func physicsWorld(world: SCNPhysicsWorld, didBeginContact contact: SCNPhysicsContact) {
         
         let nodeA = contact.nodeA
@@ -194,6 +165,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
     func updateLabel(){
         scoreLabel.text = "Score : \(score)"
         highscoreLabel.text = "Highscore : \(highscore)"
+        livesLbl.text = "Lives : \(lives)"
+        
         
     }
     
@@ -309,18 +282,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
         
     }
     
-    //  func loseLife(){
-    //    person.run(SCNAction.move(to: SCNVector3Make(person.position.x, person.position.y - 10, person.position.z), duration: 1.0))
-    
-    //  let wait = SCNAction.wait(forDuration: 0.75)
-    
-    //lives -= 1
-    //}
-    
     func die(){
         person.runAction(SCNAction.moveTo(SCNVector3Make(person.position.x, person.position.y - 10, person.position.z), duration: 1.0))
         
         let wait = SCNAction.waitForDuration(0.75)
+        loseLife()
+        
+        
+       if lives != 0{
+        
         let sequence = SCNAction.sequence([wait, SCNAction.runBlock({
             node in
             
@@ -341,6 +311,55 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
         })])
         
         
+    
+    
+        person.runAction(sequence)
+       }  else {
+        
+        gameOver()
+        
+        
+        }
+    }
+    
+    func loseLife(){
+        lives -= 1
+        self.performSelectorOnMainThread(#selector(GameViewController.updateLabel), withObject: nil, waitUntilDone: false)
+        
+
+        
+    }
+    
+    func gameOver(){
+        
+        
+        lives = 3
+        score = 0
+        self.performSelectorOnMainThread(#selector(GameViewController.updateLabel), withObject: nil, waitUntilDone: false)
+        
+        let wait = SCNAction.waitForDuration(0.75)
+        
+        let sequence = SCNAction.sequence([wait, SCNAction.runBlock({
+            node in
+            
+            self.scene.rootNode.enumerateChildNodesUsingBlock({
+                node, stop in
+                
+                node.removeFromParentNode()
+                
+            })
+            
+        }), SCNAction.runBlock({
+            node in
+            
+            print("HI")
+            self.createNewScene()
+            
+            
+        })])
+        
+        
+        
         
         person.runAction(sequence)
     }
@@ -358,18 +377,8 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
         if counter == 10 {
             speed -= 1
             addScore()
-        }  else {
-            if counter == 20 {
-                speed -= 1
-                addScore()
-            } else {
-                if counter == 25 {
-                    newBox()
-                    counter = 0
-                }
-            }
+            counter = 0
         }
-        
         
         let randomNumber = arc4random() % 2
         
@@ -440,10 +449,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
         
     }
     
-    
-    
-    
-    func createScene(){
+    func createNewScene(){
+        newBox()
+        updateLabel()
         
         let scoreDefault = NSUserDefaults.standardUserDefaults()
         
@@ -455,12 +463,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
             
             highscore = 0
         }
-        print(highscore)
         
         
         
         
-        
+        lives = 3
         boxNumber = 0
         score = 0
         prevBoxNumber = 0
@@ -477,7 +484,28 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate, SCNPhysics
         let sceneView = self.view as! SCNView
         sceneView.delegate = self
         sceneView.scene = scene
+        setup()
+    }
+    
+    
+    func createScene(){
+        newBox()
+        updateLabel()
+        boxNumber = 0
+        prevBoxNumber = 0         
+        firstOne = true
+        dead = false
+        speed += 5
+        counter = 0
         
+        self.view.backgroundColor = bgColor
+        
+        let sceneView = self.view as! SCNView
+        sceneView.delegate = self
+        sceneView.scene = scene
+        setup()
+    }
+        func setup(){
         
         //Create Person
         
